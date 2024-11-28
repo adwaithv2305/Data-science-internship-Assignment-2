@@ -1,0 +1,13 @@
+diamonds=pd.read_csv('/content/diamonds.csv')
+duplicate=diamonds.duplicated().sum()
+duplicate
+
+data_cleaned=diamonds.dropna(subset=['carat','cut'])
+
+numeric=diamonds.select_dtypes(include=['number']).copy()
+
+
+diamonds['volume']=diamonds['x']*diamonds['y']*diamonds['z']
+diamonds['volume']=diamonds['volume'].where(diamonds['depth']>60,8)
+
+diamonds['price'].fillna(diamonds['price'].mean(),inplace=True)
