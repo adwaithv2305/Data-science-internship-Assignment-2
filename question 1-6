@@ -1,0 +1,32 @@
+import pandas as pd
+import numpy as np
+data=pd.read_csv('/content/SalesData.csv')
+data['Sale_amt'] = data['Sale_amt'].str.replace(',', '').str.replace(' ', '')
+data['Sale_amt']=data['Sale_amt'].astype(float)
+least_sale=data.groupby('Item')['Sale_amt'].min().reset_index()
+least_sale
+
+data['OrderDate']=pd.to_datetime(data['OrderDate'])
+total_sales=data.groupby([data['OrderDate'].dt.year,'Region'],as_index=False)['Sale_amt'].sum()
+total_sales.rename(columns={'OrderDate':'Year'},inplace=True)
+total_sales
+
+from datetime import datetime
+reference=datetime(2024,5,23)
+data['days_diff']=(reference-data['OrderDate']).dt.days
+data[['OrderDate','days_diff']].head()
+
+manager=data.groupby('Manager')['SalesMan'].unique().reset_index()
+manager.rename(columns={'SalesMan':'list_of_salesmen'},inplace=True)
+manager
+
+scount=data.groupby('Region',as_index=False)['SalesMan'].nunique()
+total_sales=data.groupby('Region',as_index=False)['Sale_amt'].sum()
+sales_info=pd.merge(scount,total_sales,on='Region')
+sales_info.rename(columns={'SalesMan':'salesmen_count','Sale_amt':'total_sales'},inplace=True)
+sales_info
+
+total_sales=data['Sale_amt'].sum()
+sales_percentage=data.groupby('Manager')['Sale_amt'].sum().reset_index()
+sales_percentage['percent_sales']=(sales_percentage['Sale_amt']/total_sales)*100
+sales_percentage
