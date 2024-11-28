@@ -1,0 +1,15 @@
+imdb=pd.read_csv('/content/imdb.csv')
+fifth=imdb.iloc[4]['imdbRating']
+fifth
+
+imdb_data_cleaned=data.dropna(subset=['duration'])
+imdb_data_cleaned['duration']=imdb_data_cleaned['duration'].round().astype(int)
+shortest_movie=imdb_data_cleaned.nsmallest(1,'duration')['title'].iloc[0]
+longest_movie=imdb_data_cleaned.nlargest(1,'duration')['title'].iloc[0]
+shortest_movie,longest_movie
+
+sorted=data.sort_values(by=['year','imdbRating'],ascending=[True, False])
+sorted_imdb_data.head()
+
+movies_subset=data[(data['duration']>=1800)&(imdb_data['duration']<=10800)]
+movies_subset
