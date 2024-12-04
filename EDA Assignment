@@ -1,0 +1,43 @@
+Data Analysis and Insights Generation
+Initial exploration:
+1)
+import pandas as pd
+data=pd.read_csv('/content/data.csv')
+total_sales_by_year=data.groupby('Year')['Sales'].sum()
+print(total_sales_by_year)
+
+2)
+stores_opened=data[data['Store Open'].str.contains("1991",na=False)]['Store'].nunique()
+stores_opened
+
+3)
+sales_sqft= data[['Sales','Total Sq Ft']].corr().loc['Sales','Total Sq Ft']
+print(f"Sales to Total Sq Ft correlation: {sales_sqft}")
+
+4)
+profitable=data.groupby('Super Division')['SGM'].sum().idxmax()
+print(f"Most profitable Super Division:{profitable}")
+
+5)
+active_store=data[data['Store Close']=='No Close date']['Store'].nunique()
+print(f"Number of active stores: {active_store}")
+
+6)
+most_avg_sqft=data.groupby('Super Division')['Total Sq Ft'].mean().idxmax()
+print(f"Super Division with most average sq ft: {most_avg_sqft}")
+
+Advanced Insights:
+1)
+state_sales=data.groupby('State')['Sales'].sum()
+state_store_count=data.groupby('State')['Store'].nunique()
+state_performance=(state_sales/state_store_count).sort_values(ascending=False)
+top_candidate_states=state_performance.head(3).index.tolist()
+top_candidate_states
+
+2)
+data['Month']=data['Month'].astype(int) 
+monthly_sales=data.groupby('Month')['Sales'].mean().sort_values(ascending=False)
+best_opening_month = monthly_sales.idxmax()
+best_opening_month
+
+3)
