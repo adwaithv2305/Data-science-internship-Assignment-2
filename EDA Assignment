@@ -37,7 +37,7 @@ top_candidate_states
 2)
 data['Month']=data['Month'].astype(int) 
 monthly_sales=data.groupby('Month')['Sales'].mean().sort_values(ascending=False)
-best_opening_month = monthly_sales.idxmax()
+best_opening_month=monthly_sales.idxmax()
 best_opening_month
 
 3)
